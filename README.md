@@ -13,7 +13,7 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 status](https://codecov.io/gh/mrc-ide/peeps/branch/main/graph/badge.svg)](https://codecov.io/github/mrc-ide/peeps)
 <!-- badges: end -->
 
-Use 📦peeps📦 to prepare demogrpahy inputs for use with
+Use 📦peeps📦 to prepare demography inputs for use with
 [malariasimulation](https://mrc-ide.github.io/malariasimulation/).
 
 ## Installation
