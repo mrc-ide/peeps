@@ -1,9 +1,14 @@
 #' Get demographic data from UNDP
 #'
 #' This function allows you to download the most recent life tables from the 
-#' UNDP most recent life table estimates. The life tables are downloaded where 
-#' you specify and also returned as a dataframe. If you have previously downloaded
-#' a life table the new life table will override the old one.
+#' UNDP most recent life table estimates, from 
+#' here (https://www.un.org/development/desa/pd/data/model-life-tables). 
+#' The life tables are downloaded where you specify and also returned as a 
+#' dataframe. If you have previously downloaded a life table the new life table 
+#' will override the old one.
+#' 
+#' Here is the terms of use for all UN produced data: https://www.un.org/en/about-us/terms-of-use.
+#' Please look through before downloading the data.
 #' 
 #' Note: It is unclear when these will next be updated, and when they do the urls 
 #' in the code need to change as well.
@@ -13,13 +18,16 @@
 #' Input can be a single letter a or c or abridged/complete. 
 #' Abridged tables are broken into 4 year age groups, complete life tables are computed per year.
 #' @param path Location to save undp life table.
+#' 
 #' @keywords UNDP, life table, download, population
 #' @return Data frame of life table.
 #' @export
+#' 
 #' @examples
 #' download_undp_life_table(year=2.5, type="A", path="./data/")
 #' download_undp_life_table(2.5, "Complete", "C:/Users/ines/population/data/")
 #' lifetable_2.5_complete <-download_undp_life_table(2.5, "Complete", "C:/Users/ines/population/data/")
+
 download_undp_life_table <- function(year = 1, type = "complete", path) {
   
   # making sure that the type formatting is converted to the correct format
