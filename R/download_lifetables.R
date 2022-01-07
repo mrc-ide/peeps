@@ -10,9 +10,6 @@
 #' Here is the terms of use for all UN produced data: https://www.un.org/en/about-us/terms-of-use.
 #' Please look through before downloading the data.
 #' 
-#' Note: It is unclear when these will next be updated, and when they do the urls 
-#' in the code need to change as well.
-#' 
 #' @param year Year increment for calculations, either 2.5 or 1. Input as string or integer.
 #' @param type "Abridged" or "complete" life tables. 
 #' Input can be a single letter a or c or abridged/complete. 
@@ -34,18 +31,21 @@ download_undp_life_table <- function(year = 1, type = "complete", path) {
   type <- tolower(type)
   type <- ifelse(startsWith(type, "a"), "abridged", "complete")
   
-  # Year=1 and type="Complete" stored at different URL pattern than the rest, so handle this with 
-  # if statement for now.
-  if (year==1 & type=="complete"){
-    url <- "https://www.un.org/en/development/desa/population/publications/pdf/mortality/EMLT/MLT_UN2011_130_1y_complete.xlsx"
-  } else {
-    url <- paste0("https://www.un.org/development/desa/pd/sites/www.un.org.development.desa.pd/files/unpd_2011_mlt_130_",
-                 year, "y_", type, ".xlsx")
-  }
+  # where to find the tables
+  url <- "https://www.un.org/development/desa/pd/data/model-life-tables"
+  text<- paste0("_",year, "y_", type, ".xlsx") # current syntax of how life tables are saved
   
-  destfile<-paste0(path, year, "y_", type, "_lifetable.xlsx") # save as excel file
-  download.file(url, destfile)
+  # look at all the urls on the website
+  htmlcode = xml2::read_html(url)
   
-  data<-readxl::read_excel(destfile)
-  return(data)
+  # find the relevant url to download the lifetable you're looking for 
+  nodes=rvest::html_nodes(htmlcode,xpath=paste0('//*[contains(@href, "',text,'")]')) %>% rvest::html_attr("href")
+  df=as.data.frame(as.character(nodes))
+  names(df)="link"
+  
+  destfile<-paste0(path, year, "y_", type, "_lifetable.xlsx") # path of file + name, i.e. 1y_abridged.xlsx
+  download.file(df$link[1], destfile) # download the url that matches the string found, in the destination specified
+  
+  data<-readxl::read_excel(destfile) # load it into R 
+  return(data) # return as dataframe
 }
