@@ -9,7 +9,7 @@
 #' 
 #' Here is the terms of use for all UN produced data: https://www.un.org/en/about-us/terms-of-use.
 #' Please look through before downloading the data.
-#' 
+#' Requires 
 #' @param year Year increment for calculations, either 2.5 or 1. Input as string or integer.
 #' @param type "Abridged" or "complete" life tables. 
 #' Input can be a single letter a or c or abridged/complete. 
@@ -39,7 +39,8 @@ download_undp_life_table <- function(year = 1, type = "complete", path) {
   htmlcode = xml2::read_html(url)
   
   # find the relevant url to download the lifetable you're looking for 
-  nodes=rvest::html_nodes(htmlcode,xpath=paste0('//*[contains(@href, "',text,'")]')) %>% rvest::html_attr("href")
+  nodes<-rvest::html_nodes(htmlcode,xpath=paste0('//*[contains(@href, "',text,'")]'))
+  nodes<-rvest::html_attr(nodes, "href")
   df=as.data.frame(as.character(nodes))
   names(df)="link"
   
@@ -49,3 +50,4 @@ download_undp_life_table <- function(year = 1, type = "complete", path) {
   data<-readxl::read_excel(destfile) # load it into R 
   return(data) # return as dataframe
 }
+mydata<-download_undp_life_table(path=getwd())
