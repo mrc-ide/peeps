@@ -5,7 +5,7 @@
 #' here (https://www.un.org/development/desa/pd/data/model-life-tables). 
 #' The life tables are downloaded where you specify and also returned as a 
 #' dataframe. If you have previously downloaded a life table the new life table 
-#' will override the old one.
+#' will override the old one. 
 #' 
 #' Here is the terms of use for all UN produced data: https://www.un.org/en/about-us/terms-of-use.
 #' Please look through before downloading the data.
@@ -17,7 +17,7 @@
 #' @param path Location to save undp life table.
 #' 
 #' @keywords UNDP, life table, download, population
-#' @return Data frame of life table.
+#' @return List of life table.
 #' @export
 #' 
 #' @examples
@@ -45,9 +45,10 @@ download_undp_life_table <- function(year = 1, type = "complete", path) {
   names(df)="link"
   
   destfile<-paste0(path, year, "y_", type, "_lifetable.xlsx") # path of file + name, i.e. 1y_abridged.xlsx
-  download.file(df$link[1], destfile) # download the url that matches the string found, in the destination specified
+  curl::curl_download(df$link[1], destfile) # download the url that matches the string found, in the destination specified
   
   data<-readxl::read_excel(destfile) # load it into R 
   return(data) # return as dataframe
 }
-mydata<-download_undp_life_table(path=getwd())
+
+
