@@ -17,4 +17,5 @@ Imports:
     xml2,
     curl,
     readxl,
-    rvest
+    rvest,
+    base
