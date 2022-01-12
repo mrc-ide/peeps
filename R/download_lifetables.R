@@ -50,5 +50,3 @@ download_undp_life_table <- function(year = 1, type = "complete", path) {
   data<-readxl::read_excel(destfile) # load it into R 
   return(data) # return as dataframe
 }
-
-
