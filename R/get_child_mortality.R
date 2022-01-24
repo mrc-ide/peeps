@@ -37,7 +37,7 @@
 #' @import data.table
 #' @import stringr
 #' @import tidyverse
-#' @import dplyr
+#' @importFrom dplyr bind_rows
 #' 
 #' @examples
 #' get_child_mortality(country="Norway")
