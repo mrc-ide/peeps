@@ -2,10 +2,13 @@
 
 export(add1)
 export(extract_deathrates)
+export(get_child_mortality)
 export(get_lifetable)
 export(get_population)
 import(countrycode)
 import(data.table)
+import(dplyr)
 import(stringr)
 import(tidyr)
+import(tidyverse)
 import(vroom)

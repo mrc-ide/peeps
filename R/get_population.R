@@ -1,11 +1,13 @@
 #' Get population data
 #' 
+#' @description
 #' This function allows you to download the population data from the 
 #' UN Population division, available here (https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/). 
 #' The data is downloaded to a temporary file and returned as a 
 #' dataframe. Any new download will override the old one. You can specify country,
 #' gender, time span, and whether you want data by individual year of age or 5 year age groups.
 #' 
+#' @details
 #' Here are the terms of use for all UN produced data: https://www.un.org/en/about-us/terms-of-use.
 #' Please look through before downloading the data. The data can be copied, 
 #' altered, and distributed, even for commercial use.
@@ -15,8 +17,6 @@
 #' Currently the usage of the vroom package means that memory usage is minimized, 
 #' as the vroom function downloads pointers and only loads what is actually called.
 #' However, an initial check of available memory could be added in order to be prudent.
-#' 
-#' Requirements: vroom, base, countrycode, stringr, data.table, tidyr
 #' 
 #' Future additions:
 #' Memory check. Check of years and ages inputs.

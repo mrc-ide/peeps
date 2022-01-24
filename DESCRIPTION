@@ -1,21 +1,21 @@
 Package: peeps
 Title: Malaria model demography
 Version: 0.0.1
-Authors@R: c(
-    person("Pete", "Winskill", email = "p.winskill@imperial.ac.uk", role = c("aut", "cre"))
-    )
+Authors@R: 
+    person("Pete", "Winskill", , "p.winskill@imperial.ac.uk", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
+Imports: 
+    base,
+    countrycode,
+    data.table,
+    stringr,
+    tidyr,
+    vroom
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-Suggests: 
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
-Imports: 
-    xml2,
-    curl,
-    readxl,
-    rvest,
-    base

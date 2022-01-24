@@ -1,5 +1,6 @@
 #' Get life table data
 #' 
+#' @description
 #' This function allows you to download the life table data from the 
 #' UN Population division, available here (https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/). 
 #' The data is downloaded to a temporary file and returned as a 
@@ -7,6 +8,7 @@
 #' gender, time span, and span of age groups. Currently all available life table 
 #' data is returned. For death rates specifically, see get_deathrates().
 #' 
+#' @details
 #' Here are the terms of use for all UN produced data: https://www.un.org/en/about-us/terms-of-use.
 #' Please look through before downloading the data. The data can be copied, 
 #' altered, and distributed, even for commercial use.
@@ -15,8 +17,6 @@
 #' Currently the usage of the vroom package means that memory usage is minimized, 
 #' as the vroom function downloads pointers and only loads what is actually called.
 #' However, an initial check of available memory could be added in order to be prudent.
-#' 
-#' Requirements: vroom, base, countrycode, stringr, data.table, tidyr
 #' 
 #' Future additions:
 #' Memory check. Check of years and ages inputs.
@@ -134,7 +134,7 @@ get_lifetable <- function(country="all",
 #' @examples
 #' extract_deathrates(DT)
 extract_deathrates <- function(data){
-  data<-data[, c("Location", "TimeStart", "TimeEnd", "Sex", "AgeGrpStart", "AgeGrp", "mx")]
-  names(data)[names(data) == "mx"] <- "deathrates"
+  data<-data[, c("Location", "TimeStart", "TimeEnd", "Sex", "AgeGrpStart", "AgeGrp", "mx", "qx")]
+  #names(data)[names(data) == "mx"] <- "deathrates"
   return(data)
 }

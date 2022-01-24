@@ -53,8 +53,6 @@ Currently the usage of the vroom package means that memory usage is minimized,
 as the vroom function downloads pointers and only loads what is actually called.
 However, an initial check of available memory could be added in order to be prudent.
 
-Requirements: vroom, base, countrycode, stringr, data.table, tidyr
-
 Future additions:
 Memory check. Check of years and ages inputs.
 Spell checks. Url check - make sure its still there.
