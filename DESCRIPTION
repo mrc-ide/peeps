@@ -10,9 +10,14 @@ Imports:
     countrycode,
     data.table,
     dplyr,
+    magrittr,
     plyr,
+    readxl,
+    rlang,
+    stats,
     stringr,
     tidyr,
+    utils,
     vroom
 Suggests: 
     testthat (>= 3.0.0)
