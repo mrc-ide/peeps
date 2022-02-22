@@ -4,8 +4,7 @@
 #' @param indicator Deathrates or population.
 #'
 #' @importFrom vroom vroom
-#' @importFrom httr GET
-#' @importFrom httr write_disk
+#' @import httr 
 #' @importFrom readxl read_excel
 #' @importFrom utils download.file read.csv unzip
 #'

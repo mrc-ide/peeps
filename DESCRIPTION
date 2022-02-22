@@ -11,6 +11,8 @@ Imports:
     data.table,
     stringr,
     tidyr,
+    dplyr,
+    httr,
     vroom
 Suggests: 
     testthat (>= 3.0.0)
