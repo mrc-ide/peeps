@@ -15,8 +15,8 @@
 #' @import data.table
 #' @import tidyr
 #' @import dplyr
+#' @import plyr
 #' @importFrom magrittr %>%
-#' @importFrom plyr ddply
 #'
 #' @return Vector of deathrates by year.
 #' @export

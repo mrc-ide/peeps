@@ -10,6 +10,7 @@ Imports:
     countrycode,
     data.table,
     dplyr,
+    plyr,
     stringr,
     tidyr,
     vroom
