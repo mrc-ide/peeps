@@ -4,7 +4,6 @@
 #' @param indicator Deathrates or population.
 #'
 #' @importFrom vroom vroom
-#' @import httr 
 #' @importFrom readxl read_excel
 #' @importFrom utils download.file read.csv unzip
 #'
@@ -25,21 +24,19 @@ download_data <- function(indicator = "deathrates") {
     # get the neonatal deathrates
     url <- "https://api.worldbank.org/v2/en/indicator/SH.DYN.NMRT?downloadformat=csv"
 
-    # the httr package avoids corrupting the zipfiles
-    zipfile <- "neo.zip"
-    httr::GET(
-      url = url,
-      httr::write_disk(zipfile, overwrite = T)
-    ) -> res
+    path <- tempfile(fileext = ".zip")
+
+    # download binary version
+    if (file.exists(path)) "file alredy exists" else download.file(url, path, mode = "wb")
 
     # lists the files without extracting
-    list_of_files <- utils::unzip(zipfile = zipfile, list = TRUE)
+    list_of_files <- utils::unzip(zipfile = path, list = TRUE)
 
     # find the correct file
     filename <- list_of_files[startsWith(list_of_files$Name, "API_S"), 1]
 
     # Unzip the data file from the downloaded zip file
-    f <- utils::unzip(zipfile = zipfile, files = filename)
+    f <- utils::unzip(zipfile = path, files = filename)
     df <- utils::read.csv(f, skip = 4)
     df <- df[!duplicated(df), ]
 

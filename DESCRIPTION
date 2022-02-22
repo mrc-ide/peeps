@@ -9,10 +9,9 @@ Imports:
     base,
     countrycode,
     data.table,
+    dplyr,
     stringr,
     tidyr,
-    dplyr,
-    httr,
     vroom
 Suggests: 
     testthat (>= 3.0.0)
