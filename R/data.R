@@ -29,6 +29,22 @@
 #' @source Child mortality project and UNWPP.
 "nmr"
 
+#' Infant mortality rates
+#' 
+#'
+#' @format A data frame
+#' 
+#' @source UNWPP.
+"imr"
+
+#' Under 5 mortality rates
+#' 
+#'
+#' @format A data frame
+#' 
+#' @source UNWPP
+"u5mr"
+
 #' Crude death rates
 #'
 #' @format A data frame
