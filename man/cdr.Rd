@@ -5,7 +5,18 @@
 \alias{cdr}
 \title{Crude death rates}
 \format{
-A data frame
+A data frame with 17100 rows and 7 variables:
+\describe{
+\item{country_code}{Iso3c codes}
+\item{country}{Country name}
+\item{age_from}{Starting age of the age band, inclusive.}
+\item{age_to}{Ending age of the age band, inclusive. Is 120 for all entries.}
+\item{year}{Year applicable, ranges from 1950-2099}
+\item{gender}{"both" genders only.}
+\item{value}{Number of deaths over a given period divided by the person-
+years lived by the population over that period. It is expressed as average
+annual number of deaths per 1,000 population.}
+}
 }
 \source{
 UNWPP.
@@ -14,6 +25,8 @@ UNWPP.
 cdr
 }
 \description{
-Crude death rates
+Crude death rates calculated by the UNWPP. More information on calculations
+can be found in the mortality_data vignette, or \link{here}
+(https://population.un.org/wpp/Publications/Files/WPP2019_Methodology.pdf).
 }
 \keyword{datasets}

@@ -5,7 +5,19 @@
 \alias{asmr}
 \title{Age specific mortality rates}
 \format{
-A data frame
+A data frame with 225720 rows and 7 variables:
+\describe{
+\item{country_code}{Iso3c codes}
+\item{country}{Country name}
+\item{age_from}{Starting age of the age band, inclusive.}
+\item{age_to}{Ending age of the age band, inclusive. Is 0 for <1 year. Max
+years is 120.}
+\item{year}{Starting year of 5 year group, i.e. 1960 for 1960-64, etc. From
+1950-2100.}
+\item{gender}{"both", "female", or "male"}
+\item{value}{Age specific mortality rate, or the central rate of
+mortality, mx.}
+}
 }
 \source{
 UNWPP, wrangled into a csv file by the VIMC team at

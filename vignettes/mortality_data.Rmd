@@ -1,8 +1,8 @@
 ---
-title: "Mortality Data"
+title: "Mortality Data: Overview and Usage"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Population Data}
+  %\VignetteIndexEntry{Mortality Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -35,10 +35,11 @@ The different mortality measures included in this package are as follows:
 2. Child Mortality Rates: 
     + Neonatal
     + Infant
-    + Under-5 (Note - there are two different kinds and I need to make sure I'm referencing the right one here)
+    + Under-5 
     
 Although the mortality rate datasets included in this package might look similar, they have important differences that come with certain biases. This vignette sets to briefly outline some of these differences so that appropriate choices can be made when deciding which rates to use for what purposes, and how that might affect the outcome of any analysis. 
 
+At the bottom of the vignette you will find a brief description of how to merge the asmr and nmr datasets, in order to produce dataframes that are of the standard format used by the [malariasimulation](https://github.com/mrc-ide/malariasimulation/) package.
 
 ### Population Mortality
 
@@ -138,4 +139,47 @@ head(u5mr)
 Below you can see a comparison of the VIMC fits (Montagu) do the IGME data and the extrapolation done informed by the UNWPP data by country.
 <img src="nmr.gif" width="850" height="480"/>
 
+### Merging Mortality Rates
 
+[Malariasimulation](https://github.com/mrc-ide/malariasimulation/) takes standard demography data as a vector taken from a table that looks like this:
+
+| Year | Age From | Age To  |Death Rate|
+|------|----------|---------|----------|
+| 2010 | 0        | .083333 | .4014834 |
+| 2010 | .0833333 | 1       | .0583379 |
+| 2010 | 1        | 5       | .0380348 |
+| 2010 | 5        | 10      | .0395061 |
+| 2010 | 10       | 15      | .0347255 |
+| 2010 | 15       | 20      | .0240849 |
+| 2010 | 20       | 25      | .0300902 |
+| 2010 | 25       | 30      | .0357914 |
+| 2010 | 30       | 35      | .0443123 |
+| 2010 | 35       | 40      | .0604932 |
+| 2010 | 40       | 45      | .0466799 |
+| 2010 | 45       | 50      | .0426199 |
+| 2010 | 50       | 55      | .0268332 |
+| 2010 | 55       | 60      | .049361  |
+| 2010 | 60       | 65      | .0234852 |
+| 2010 | 65       | 70      | .0988317 |
+| 2010 | 70       | 75      | .046755  |
+| 2010 | 75       | 80      | .1638875 |
+| 2010 | 80       | 85      | .1148753 |
+| 2010 | 85       | 90      | .3409079 |
+| 2010 | 90       | 95      | .2239224 |
+| 2010 | 95       | 200     | .8338688 |
+
+In order to convert the data sets provided by the UNWPP through the VIMC to this format, first we must decide if we want to use the the crude death rates or the age specific mortality rates, and from there, we need to decide how we want to incorporate the neonatal mortality rates.
+
+As a default, we will choose to use age specific mortality rates and convert the neonatal rates to be similar to the asmr rates by taking the 5 year averages to account for year over year variation. 
+```{r example conversion}
+# Merging rates to yield one data frame of mortality rates, by taking averages
+rates_asmr_style<-merge_nmr_asmr(format="asmr")
+summary(rates_asmr_style) # 78660 rows by 7 columns
+
+# Using the NMR style - extrapolating the ASMR out and using the year over year NMR data
+rates_nmr_style<-merge_nmr_asmr(format="nmr")
+summary(rates_nmr_style) # 393300 rows by 7 columns
+```
+You'll see that the distribution of the mortality rates remain the same, as the only numerical transformation that is happening is averaging of the NMR values.
+
+In order to use in malariasimulation, you subset the dataframe for your preferred year and country values.

@@ -10,8 +10,9 @@ nmr_to_asmr(nmr = peeps::nmr)
 \item{nmr}{Dataframe of neonatal mortality rates.}
 }
 \value{
-Dataframe
+Dataframe of 5 year averages of neonatal mortality rates
 }
 \description{
-What this means is that it will the 5 year average
+This function returns the average of the NMR for every five year band, i.e.
+for 1950-1954, 1955-1959, etc., so that it can be combined with the ASMR.
 }

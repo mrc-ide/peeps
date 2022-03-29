@@ -7,11 +7,11 @@
 asmr_to_nmr(asmr = peeps::asmr)
 }
 \arguments{
-\item{asmr}{Data frame of age standardized mortality rates.}
+\item{asmr}{Data frame of age specific mortality rates.}
 }
 \value{
-Dataframe
+Dataframe of age specific mortality rates expanded by year.
 }
 \description{
-Break the 5 year averages into single year values.
+Breaks the 5 year averages of the ASMR into single year values.
 }

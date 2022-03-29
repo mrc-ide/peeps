@@ -5,7 +5,18 @@
 \alias{nmr}
 \title{Neonatal mortality rates}
 \format{
-A data frame
+A data frame with 17100 rows and 7 variables:
+\describe{
+\item{country_code}{Iso3c codes}
+\item{country}{Country name}
+\item{age_from}{Starting age of the age band, inclusive}
+\item{age_to}{Ending age of the age band, inclusive. Is 0.083333 for all
+neonatal infants.}
+\item{year}{Year applicable, ranges from 1950-2100}
+\item{gender}{"both" genders only.}
+\item{value}{Probability of dying between birth and exact age 1 month. It
+is expressed as average annual deaths per 1,000 births.}
+}
 }
 \source{
 Child mortality project and UNWPP.

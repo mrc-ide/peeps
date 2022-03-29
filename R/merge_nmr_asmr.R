@@ -5,18 +5,20 @@
 #' can combine these functions a few different ways:
 #'
 #' 1. Take the 5 year averages of the neonatal rates, so transform them to be of
-#' the same format as the death rates, then combine.
+#' the same format as the death rates, then combine (format = "asmr", uses the 
+#' nmr_to_asmr() function).
 #' 2. Expand the death rates data -> simply copy the values from 1950 onto years
-#' 1951, 1952, 1953, and 1954. Repeat onwards. Combine with neonatal data.
+#' 1951, 1952, 1953, and 1954, etc. then combine with neonatal data (format = 
+#' "nmr", uses the asmr_to_nmr() function).
 #'
-#' 3. Expanding the death rate data, including an element of stochasticity, to
-#' be discussed.
+#' This output can be subset by country and year to be directly fed into 
+#' malariasimulation.
 #'
 #' @param format Format to convert dataset to. Can be either asmr or nmr format.
-#' @importFrom magrittr %>%
-#' @importFrom stats aggregate
+#' 
+#' @importFrom dplyr bind_rows
 #'
-#' @return Vector of deathrates by year.
+#' @return Dataframe of death rates from the ages of 0-120, from 1950-2100.
 #' @export
 merge_nmr_asmr <- function(format = "asmr") {
   nmr <- peeps::nmr
@@ -47,9 +49,15 @@ merge_nmr_asmr <- function(format = "asmr") {
 
 #' Function to convert NMR to ASMR format
 #'
-#' What this means is that it will the 5 year average
+#' This function returns the average of the NMR for every five year band, i.e.
+#' for 1950-1954, 1955-1959, etc., so that it can be combined with the ASMR.
+#' 
 #' @param nmr Dataframe of neonatal mortality rates.
-#' @return Dataframe
+#' 
+#' @importFrom stats aggregate
+#' @import data.table
+#' 
+#' @return Dataframe of 5 year averages of neonatal mortality rates
 #' @export
 nmr_to_asmr <- function(nmr = peeps::nmr) {
   # find the average of the neonatal mortality rates for every 5 years
@@ -78,11 +86,13 @@ nmr_to_asmr <- function(nmr = peeps::nmr) {
 
 #' Function to convert ASMR to NMR format
 #'
-#' Break the 5 year averages into single year values.
-#' @param asmr Data frame of age standardized mortality rates.
+#' Breaks the 5 year averages of the ASMR into single year values.
+#' 
+#' @param asmr Data frame of age specific mortality rates.
+#' 
 #' @import data.table
 #'
-#' @return Dataframe
+#' @return Dataframe of age specific mortality rates expanded by year.
 #' @export
 asmr_to_nmr <- function(asmr = peeps::asmr) {
   if (nrow(asmr) == 0 || ncol(asmr) == 0) {

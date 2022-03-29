@@ -10,7 +10,7 @@ merge_nmr_asmr(format = "asmr")
 \item{format}{Format to convert dataset to. Can be either asmr or nmr format.}
 }
 \value{
-Vector of deathrates by year.
+Dataframe of death rates from the ages of 0-120, from 1950-2100.
 }
 \description{
 While the neonatal mortality rates are estimates by year, the
@@ -20,10 +20,13 @@ can combine these functions a few different ways:
 \details{
 \enumerate{
 \item Take the 5 year averages of the neonatal rates, so transform them to be of
-the same format as the death rates, then combine.
+the same format as the death rates, then combine (format = "asmr", uses the
+nmr_to_asmr() function).
 \item Expand the death rates data -> simply copy the values from 1950 onto years
-1951, 1952, 1953, and 1954. Repeat onwards. Combine with neonatal data.
-\item Expanding the death rate data, including an element of stochasticity, to
-be discussed.
+1951, 1952, 1953, and 1954, etc. then combine with neonatal data (format =
+"nmr", uses the asmr_to_nmr() function).
 }
+
+This output can be subset by country and year to be directly fed into
+malariasimulation.
 }
