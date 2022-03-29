@@ -1,4 +1,4 @@
-#' Data Objects Documentation
+#' Age specific mortality rates
 #'
 #' A list of all age smoothed mortality rates currently available from the
 #' UNWPP, who released the data with a free license to use and distribute as
@@ -9,12 +9,13 @@
 #' lifetables, and further details on how they were computed can be found at
 #' \url{https://www.un.org/development/desa/pd/data/model-life-tables}.
 #'
-#' @format A list
+#' @format A data frame
+#' 
 #' @source UNWPP, wrangled into a csv file by the VIMC team at
 #' Imperial, distributed through Montagu.
 "asmr"
 
-#' A list of neonatal mortality rates.
+#' Neonatal mortality rates
 #' 
 #' The Imperial team calculated the NMR by taking the NMR/IMR ratio from the
 #' child mortality dataset (see \url{childmortality.org} for more details) and 
@@ -23,6 +24,27 @@
 #' while incorporating the higher accuracy and granularity of the child 
 #' mortality project estimates.
 #'
-#' @format A list
+#' @format A data frame
+#' 
 #' @source Child mortality project and UNWPP.
 "nmr"
+
+#' Crude death rates
+#'
+#' @format A data frame
+#' @source UNWPP.
+"cdr"
+
+#' Crude birth rates
+#' 
+#'
+#' @format A data frame 
+#' 
+#' @source UNWPP
+"cbr"
+
+#' Population data
+#' 
+#' @format A data frame 
+#' @source UNWPP
+"pop"

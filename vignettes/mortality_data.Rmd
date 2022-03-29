@@ -1,0 +1,114 @@
+---
+title: "Population Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Population Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(peeps)
+```
+
+
+## Data Overview
+
+
+The different mortality measures included in this package are as follows:
+
+1. Population Mortality Rates
+    + Age Specific Mortality Rates
+    + Crude Death Rates 
+2. Child Mortality Rates: 
+    + Neonatal
+    + Infant
+    + Under-5 (Note - there are two different kinds and I need to make sure I'm referencing the right one here)
+3. Birth Rates
+4. Population Data
+    
+Although the mortality rate datasets included in this package might look similar, they have important differences that come with certain biases. This vignette sets to briefly outline some of these differences so that appropriate choices can be made when deciding which rates to use for what purposes, and how that might affect the outcome of any analysis. 
+
+
+### Population Mortality
+
+Data Set | Mortality Rate | Definition | Equation
+------------- | ------------- | ------------- | -------------
+asmr | Age specific mortality rate. | Measures incidence of death at each age, adjusted for population distributions. Assumes age-mortality profile of the cohort stays constant throughout life. Number of deaths every year at age x ($d_{x}$) divided by the mid year population of age x ($p_{x}$). | $m_{x} = \frac{d_{x}}{p_{x}}$
+cdr | Crude death rate. | Number of deaths at age x ($d_{x}$) over a given period ($[0,T]$) divided by the person-years ($L_{x}$) lived by the population over that period. It is expressed as average annual number of deaths per 1,000 population. | $CDR[0,T] = \frac{d_{x}}{L_{x}}$ where $L_{x} = I_{x + 1} + d_{x}*0.5$.<br/><br/><small> $I_{x+1}$ are the number of people who survive until age x+1, who each contribute one person year to the calculation. Each person who dies in the interval ($d_{x}$) contributes half a person year.</small> 
+
+The population level mortality rates provided by this package are taken from the model life tables calculated in the [United Nations 2019 World Population Prospects](https://population.un.org/wpp/) (UNWPP). More details on the model life tables and how they are calculated can be found [here](https://www.un.org/development/desa/pd/data/model-life-tables), and details on the UNWPP 2019 methodology can be found [here](https://population.un.org/wpp/Publications/Files/WPP2019_Methodology.pdf). These data are processed into a downloadable format by the [Vaccine Impact Modelling Consortium](https://www.vaccineimpact.org) (VIMC) at Imperial College London.
+
+**put something about licensing here?**
+**chop this vignette up**
+
+There are two standard measures of mortality: the age specific mortality rate (ASMR, also known as $m_{x}$, or the central rate of mortality) and the crude death rate (CDR), which is calculated using the total number of deaths at a certain age and the life table projections of person years lived. Given the variability in crude death numbers by year, cohort, random error/outliers/biases in reporting and measurement, and the underlying age distribution in a population, the ASMR is often used in order to compare mortality trends across times and countries. The ASMR takes an average over 5 year timespans and 5 year age groups, and adjusts for higher age distributions in populations. However, the ASMR is taken from a model life table, which is a theoretical tool used to model the mortality profile of a specific cohort over time, and thus assumes that this mortality profile remains constant throughout the life of the cohort. Therefore, the CDR can be helpful in providing a snapshot of a country's specific population profile at a given moment in time, and allows for the year over year variation in the differences in mortality by cohort.
+
+
+
+```{r asmr}
+# Investigating the details of the mortality rate data sets
+
+# Call age specific mortality rates from peeps package
+asmr <-peeps::asmr
+dim(asmr) # 225720 rows by 8 columns
+head(asmr)
+
+cdr <- peeps::cdr
+dim(cdr) # 17100 rows by 7 columns
+head(cdr)
+
+# Comparing the two values
+summary(asmr$value)
+summary(cdr$value)
+
+
+```
+**add plots**
+
+### Child Mortality Data
+
+Data Set | Mortality Rate | Definition | Source
+------------- | ------------- | ------------- | -------------
+nmr | Neonatal mortality rate. | Probability of dying between birth and exact age 28 days. It is expressed as average annual deaths per 1,000 births. | VIMC (Combination of UNWPP and [IGME](https://childmortality.org/))
+imr | Infant mortality rate. | Probability of dying between birth and exact age 1. It is expressed as average annual deaths per 1,000 births. | UNWPP
+u5mr | Under-5 mortality rate. | Probability of dying between birth and exact age 5. It is expressed as average annual deaths per 1,000 births. | UNWPP
+
+The UNWPP provides smoothed estimates of the IMR and the U5MR, however does not provide estimates of the NMR. The [UN Inter-agency Group for Child Mortality Estimation](https://childmortality.org/) provides much more detailed estimates of all past child mortality rates, including NMR, through a process of detailed data collection and careful model fitting, however does not provide any projections of the NMR into the future. The VIMC therefore proposes an NMR estimate that is a scaled transformation of the UNWPP's IMR, multiplied by the fraction of NMR/IMR from the IGME. For estimates before or after the IGME time range, the closest data points are used. This because the NMR is consistently smaller than the IMR and is a subset of the IMR, and will thus remain consistent with each other over time. 
+
+### Birth Rates
+
+### Population Plots
+
+
+
+
+
+### Model Life Tables
+
+The United Nations Population Division regularly release a set of model life tables, that calculate age specific mortality rates (mx) along with other standard life table values such as probabilities of death and life expectancies etc. for five year spans from 1950 and projected forward until 2100. The age specific mortality rates are adjusted for age distributions within specified age groups in countries and are calculated as averages between the the six month mark of the starting year until the six month mark of the ending year (i.e., for 1950-1955, the life tables are calculated using data between June 1950 up until June 1955). This is done to account for variation in age distributions within countries and variations in mortality by year. Doing so allows for comparison between countries with different age distributions and other internal factors that affect mortality.
+
+The values are projected forward using a series of models further outlined in [this paper.](https://www.un.org/development/desa/pd/sites/www.un.org.development.desa.pd/files/unpd_2011_mlt_modifying_the_lee-carter_method_to_project_mortality_changes_up_to_2100.pdf)
+
+The dataset available here is called **asmr**, which contains the following variables:
+
+Variable | Definition
+------------- | -------------
+country_code | Standard iso3c country code.
+country | Country name.
+age_from | Starting value of the age group, inclusive.
+age_to | Ending value of the age group, inclusive. Youngest age group has age_to = 0, which indicates <1 years old.
+year | The first year of the 5-year band that the mortality rate is averaged over. Data aggregation starts halfway through the year.
+gender | Male, female, and both are available.
+value | Age specific mortality rate, also known as the standard rate of mortality (mx).
+
+
+
+

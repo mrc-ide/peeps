@@ -1,0 +1,75 @@
+---
+title: "Sources of Demography Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Demography Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(peeps)
+```
+
+
+## Overview
+
+There is a lot of demography data out there, so I thought it might be helpful to write a quick overview of what there is, how it's collected, and what the differences are between them, and how they are used.
+
+There are a few different datasets compiled regularly by the UN WPP and Child mortality teams.
+More can be found on life table calculations [here](https://www.un.org/development/desa/pd/data/model-life-tables) and on child mortality calculations [here](https://childmortality.org/data)
+
+These data were further processed by the [Vaccine Impact Modelling Consortium](https://www.vaccineimpact.org) in order to produce easily downloadable csv datasets that can be used and accessed more easily than the excel files available on the UNWPP website.
+
+These are what is available in this package. This vignette sets to describe and illustrate their contents briefly:
+
+1. Model Life Tables 
+2. Crude Death Rates 
+3. Crude Birth Rates 
+4. Population Data 
+5. Child Mortality Rates: 
+    + Neonatal, 
+    + Infant, and 
+    + Under-5 Mortality Rates 
+
+As they are updated by the UNWPP and the Child Mortality group and then processed and made available by the VIMC, so they will be updated in the package. Please raise an issue if there are more mortality measures that could be made available that would be useful. 
+
+
+### Model Life Tables
+
+The United Nations Population Division regularly release a set of model life tables, that calculate age specific mortality rates (mx) along with other standard life table values such as probabilities of death and life expectancies etc. for five year spans from 1950 and projected forward until 2100. The age specific mortality rates are adjusted for age distributions within specified age groups in countries and are calculated as averages between the the six month mark of the starting year until the six month mark of the ending year (i.e., for 1950-1955, the life tables are calculated using data between June 1950 up until June 1955). This is done to account for variation in age distributions within countries and variations in mortality by year. Doing so allows for comparison between countries with different age distributions and other internal factors that affect mortality.
+
+The values are projected forward using a series of models further outlined in [this paper.](https://www.un.org/development/desa/pd/sites/www.un.org.development.desa.pd/files/unpd_2011_mlt_modifying_the_lee-carter_method_to_project_mortality_changes_up_to_2100.pdf)
+
+The dataset available here is called **asmr**, which contains the following variables:
+
+Variable | Definition
+------------- | -------------
+country_code | Standard iso3c country code.
+country | Country name.
+age_from | Starting value of the age group, inclusive.
+age_to | Ending value of the age group, inclusive. Youngest age group has age_to = 0, which indicates <1 years old.
+year | The first year of the 5-year band that the mortality rate is averaged over. Data aggregation starts halfway through the year.
+gender | Male, female, and both are available.
+value | Age specific mortality rate, also known as the standard rate of mortality (mx).
+
+
+
+```{r asmr}
+# Call model life table data from peeps package
+
+mortality_data <-peeps::asmr
+dim(mortality_data) # 225720 rows by 8 columns
+head(mortality_data)
+```
+
+## 
+
+
