@@ -1,7 +1,7 @@
 #' Merge neonatal deathrates with population deathrates.
 #'
-#' While the neonatal mortality rates are estimates by year, the
-#' age specific mortality rates are given per group of 5 years. The user
+#' While the neonatal mortality rates (NMR) are estimates by year, the
+#' age specific mortality rates (ASMR) are given per group of 5 years. The user
 #' can combine these functions a few different ways:
 #'
 #' 1. Take the 5 year averages of the neonatal rates, so transform them to be of
@@ -10,7 +10,10 @@
 #' 2. Expand the death rates data -> simply copy the values from 1950 onto years
 #' 1951, 1952, 1953, and 1954, etc. then combine with neonatal data (format = 
 #' "nmr", uses the asmr_to_nmr() function).
-#'
+#' 
+#' As the NMR rates are not available segregated by gender, only rates for the
+#' full population are returned. 
+#' 
 #' This output can be subset by country and year to be directly fed into 
 #' malariasimulation.
 #'
@@ -23,7 +26,7 @@
 merge_nmr_asmr <- function(format = "asmr") {
   nmr <- peeps::nmr
   asmr <- peeps::asmr
-
+  
   asmr <- subset(asmr, asmr$gender == "both") # 75240 obs
 
   # recode ages for merging

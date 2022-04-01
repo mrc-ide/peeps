@@ -1,5 +1,6 @@
 ---
 title: "Mortality Data: Overview and Usage"
+author: "Ines Gerard-Ursin"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Mortality Data}
@@ -98,15 +99,15 @@ rates<- rates %>%
 makeplot <- function(){
   datalist <- split(rates, rates$country_code)
   lapply(datalist, function(data){
-    p <- ggplot(data, aes(x=year, y=value)) +
+    p <- ggplot2::ggplot(data, aes(x=year, y=value)) +
       geom_point(aes(color=as.factor(rate))) +
-      labs(y="Average rate per 100,000", x="Year", title=data$country_code, col="Rate") + 
-      theme_classic()
+      labs(y="Average rate per 100,000", x="Year", title=paste0(data$country_code, " Average Mortality"), col="Rate") + 
+      theme_bw()
     print(p)
   })
 }
 gif_file <- file.path('deathrates.gif')
-save_gif(makeplot(), gif_file, 1280, 720, res = 144)
+gifski::save_gif(makeplot(), gif_file, 1280, 720, res = 144)
 ```
 <img src="deathrates.gif" width="850" height="480"/>
 
@@ -137,7 +138,8 @@ head(u5mr)
 ```
 
 Below you can see a comparison of the VIMC fits (Montagu) do the IGME data and the extrapolation done informed by the UNWPP data by country.
-<img src="nmr.gif" width="850" height="480"/>
+
+![NMR VIMC fits](nmr.gif)
 
 ### Merging Mortality Rates
 
@@ -181,5 +183,3 @@ rates_nmr_style<-merge_nmr_asmr(format="nmr")
 summary(rates_nmr_style) # 393300 rows by 7 columns
 ```
 You'll see that the distribution of the mortality rates remain the same, as the only numerical transformation that is happening is averaging of the NMR values.
-
-In order to use in malariasimulation, you subset the dataframe for your preferred year and country values.

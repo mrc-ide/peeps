@@ -5,7 +5,7 @@
 \alias{cbr}
 \title{Crude birth rates}
 \format{
-A data frame with 17100 rows and 7 variables:
+A data frame with 17100 rows and 8 variables:
 \describe{
 \item{country_code}{Iso3c codes}
 \item{country}{Country name}
@@ -16,6 +16,7 @@ A data frame with 17100 rows and 7 variables:
 \item{value}{Number of births over a given period divided by the person-
 years lived by the population over that period. It is expressed as average
 annual number of births per 1,000 population.}
+\item{income_group}{World Bank country income group.}
 }
 }
 \source{

@@ -13,8 +13,8 @@ merge_nmr_asmr(format = "asmr")
 Dataframe of death rates from the ages of 0-120, from 1950-2100.
 }
 \description{
-While the neonatal mortality rates are estimates by year, the
-age specific mortality rates are given per group of 5 years. The user
+While the neonatal mortality rates (NMR) are estimates by year, the
+age specific mortality rates (ASMR) are given per group of 5 years. The user
 can combine these functions a few different ways:
 }
 \details{
@@ -26,6 +26,9 @@ nmr_to_asmr() function).
 1951, 1952, 1953, and 1954, etc. then combine with neonatal data (format =
 "nmr", uses the asmr_to_nmr() function).
 }
+
+As the NMR rates are not available segregated by gender, only rates for the
+full population are returned.
 
 This output can be subset by country and year to be directly fed into
 malariasimulation.

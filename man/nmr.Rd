@@ -5,7 +5,7 @@
 \alias{nmr}
 \title{Neonatal mortality rates}
 \format{
-A data frame with 17100 rows and 7 variables:
+A data frame with 17100 rows and 8 variables:
 \describe{
 \item{country_code}{Iso3c codes}
 \item{country}{Country name}
@@ -16,6 +16,7 @@ neonatal infants.}
 \item{gender}{"both" genders only.}
 \item{value}{Probability of dying between birth and exact age 1 month. It
 is expressed as average annual deaths per 1,000 births.}
+\item{income_group}{World Bank country income group.}
 }
 }
 \source{
@@ -30,6 +31,6 @@ child mortality dataset (see \url{childmortality.org} for more details) and
 applying that transformation to the IMR values calculated in the life tables
 of the UNWPP. This in order to keep data consistent and at the UNWPP scale,
 while incorporating the higher accuracy and granularity of the child
-mortality project estimates.
+mortality project estimates. NMR rates are not available by gender.
 }
 \keyword{datasets}

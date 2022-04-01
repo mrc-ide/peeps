@@ -5,7 +5,7 @@
 \alias{asmr}
 \title{Age specific mortality rates}
 \format{
-A data frame with 225720 rows and 7 variables:
+A data frame with 225720 rows and 8 variables:
 \describe{
 \item{country_code}{Iso3c codes}
 \item{country}{Country name}
@@ -17,6 +17,7 @@ years is 120.}
 \item{gender}{"both", "female", or "male"}
 \item{value}{Age specific mortality rate, or the central rate of
 mortality, mx.}
+\item{income_group}{World Bank country income group.}
 }
 }
 \source{

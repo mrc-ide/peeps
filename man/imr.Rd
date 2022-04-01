@@ -5,7 +5,7 @@
 \alias{imr}
 \title{Infant mortality rates}
 \format{
-A data frame with 17100 rows and 7 variables:
+A data frame with 17100 rows and 8 variables:
 \describe{
 \item{country_code}{Iso3c codes}
 \item{country}{Country name}
@@ -15,6 +15,8 @@ A data frame with 17100 rows and 7 variables:
 \item{gender}{"both" genders only.}
 \item{value}{Probability of dying between birth and exact age 1 year. It is
 expressed as average annual deaths per 1,000 births.}
+\item{income_group}{World Bank country income group.}
+}
 }
 \source{
 UNWPP.
