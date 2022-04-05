@@ -31,7 +31,7 @@ merge_nmr_asmr <- function(format = "asmr") {
 
   # recode ages for merging
   asmr$age_to <- ifelse(asmr$age_to == 0, 1, asmr$age_to)
-  asmr$age_from <- ifelse(asmr$age_from == 0, 28 / 365.24, asmr$age_from)
+  asmr$age_from <- ifelse(asmr$age_from == 0, 0.083333, asmr$age_from)
 
   if (format == "asmr") {
     new_nmr <- nmr_to_asmr(nmr)

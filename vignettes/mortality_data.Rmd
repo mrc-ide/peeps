@@ -141,7 +141,7 @@ Below you can see a comparison of the VIMC fits (Montagu) do the IGME data and t
 
 ![NMR VIMC fits](nmr.gif)
 
-### Merging Mortality Rates
+### Loading Mortality Rates
 
 [Malariasimulation](https://github.com/mrc-ide/malariasimulation/) takes standard demography data as a vector taken from a table that looks like this:
 
@@ -170,16 +170,45 @@ Below you can see a comparison of the VIMC fits (Montagu) do the IGME data and t
 | 2010 | 90       | 95      | .2239224 |
 | 2010 | 95       | 200     | .8338688 |
 
+If we want to load this data from our datasets, we can call `peeps::load_deathrates()',
+which either loads all the data we have, or takes additional arguments and subsets
+the death rates by them. 
+
+```{r load deathrates}
+# Loads all deathrates, giving years divisible by 5
+all_deathrates<-peeps::load_deathrates()
+summary(all_deathrates)
+
+# Loads all deathrates, giving single years
+all_deathrates_single_year<-peeps::load_deathrates(format="nmr")
+summary(as.factor(all_deathrates_single_year$year))
+
+# Loads deathrates, subset by country code 
+all_deathrates_kenya<-peeps::load_deathrates(iso3c = "KEN")
+summary(all_deathrates_kenya)
+
+# Subset by country name and year
+all_deathrates_kenya_1990 <- peeps::load_deathrates(country="Kenya", year=1990)
+summary(all_deathrates_kenya_1990)
+```
+
+Under the hood, load_deathrates() merges the UNWPP and VIMC data using one of two pre-specified methods. Both methods produce a dataframe with the same distribution of deathrates, but it is up to the user to decide whether they want the deathrates by individual year or by 5 year bands. What follows is an explanation of the conversion process.
+
+
+#### Merging NMR and ASMR data
+
 In order to convert the data sets provided by the UNWPP through the VIMC to this format, first we must decide if we want to use the the crude death rates or the age specific mortality rates, and from there, we need to decide how we want to incorporate the neonatal mortality rates.
 
-As a default, we will choose to use age specific mortality rates and convert the neonatal rates to be similar to the asmr rates by taking the 5 year averages to account for year over year variation. 
+As a default, we will choose to use age specific mortality rates and convert the neonatal rates to be similar to the asmr rates by taking the 5 year averages to account for year over year variation. If we want to have data by individual year, we can specify format = "nmr", and the dataframe that is returned has nmr values by year and asmr rates for the 5 year age bands copied onto the years within that age band.
+
 ```{r example conversion}
 # Merging rates to yield one data frame of mortality rates, by taking averages
-rates_asmr_style<-merge_nmr_asmr(format="asmr")
+rates_asmr_style<-peeps::merge_nmr_asmr(format="asmr")
 summary(rates_asmr_style) # 78660 rows by 7 columns
 
 # Using the NMR style - extrapolating the ASMR out and using the year over year NMR data
-rates_nmr_style<-merge_nmr_asmr(format="nmr")
+rates_nmr_style<-peeps::merge_nmr_asmr(format="nmr")
 summary(rates_nmr_style) # 393300 rows by 7 columns
 ```
+
 You'll see that the distribution of the mortality rates remain the same, as the only numerical transformation that is happening is averaging of the NMR values.
