@@ -20,7 +20,7 @@ library(peeps)
 library(readxl)
 library(ggplot2)
 library(magrittr)
-library(gifski)
+#library(gifski)
 ```
 
 ## Demographic Transition Model 
