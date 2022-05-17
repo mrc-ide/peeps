@@ -130,7 +130,6 @@
 #'   \item{income_group}{World Bank country income group.}
 #' }
 #' 
-#' 
 #' @source UNWPP
 "cbr"
 
@@ -151,7 +150,6 @@
 #'   \item{income_group}{World Bank country income group.}
 #' }
 #' 
-#' 
 #' @source UNWPP
 "pop_detail"
 
@@ -169,6 +167,24 @@
 #'   \item{income_group}{World Bank country income group.}
 #' }
 #' 
-#' 
 #' @source UNWPP
 "pop"
+
+#' Mortality rates from 1950-2099. Average five year values for age specific 
+#' mortality rates from model life tables used as a basis for linear 
+#' interpolation between years, and then combined with neonatal mortality
+#' estimates. 
+#'
+#'@format A data frame with 383268 rows and 8 variables:
+#' \describe{
+#'   \item{country_code}{Iso3c codes}
+#'   \item{country}{Country name}
+#'   \item{age_from}{Starting age of the age band, inclusive.}
+#'   \item{age_to}{Ending age of the age band, inclusive. Is 120 for all entries.}
+#'   \item{year}{Year applicable, ranges from 1950-2099}
+#'   \item{gender}{"both" genders only.}
+#'   \item{value}{Mortality rate.}
+#'   \item{income_group}{World Bank country income group.}
+#' }
+#' 
+"mortality_rates"

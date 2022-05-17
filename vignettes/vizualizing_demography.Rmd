@@ -55,7 +55,7 @@ all_data<-merge(rates, pop)
 
 ```
 
-We can plot the crude birth rates, crude death rates, and total population count over time to visualize the observed and predicted demographic shifts for the countries in our dataset. 
+We can plot the crude birth rates, crude death rates, and total population count over time to visualize the observed and predicted demographic shifts for the countries in our dataset. The following code has been included to provide base code for demographic transition plots, and will not be run on knitting the markdown document.
 
 ```{r dtm plots, eval=FALSE}
 # Making an animation of the demography plots
@@ -117,6 +117,8 @@ pop_detail$age_group<-factor(pop_detail$age_group,
 pop_detail$value<-ifelse(pop_detail$gender=="female", -pop_detail$value, pop_detail$value)
 pop_detail$gender<-stringr::str_to_title(pop_detail$gender)
 ```
+
+The following code has been included to provide base code for population pyramid plots, and will not be run on knitting the markdown document.
 
 ```{r pyrplot, eval=FALSE}
 # get the population of afghanistan

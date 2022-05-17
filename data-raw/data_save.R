@@ -1,4 +1,4 @@
-# data wrangle
+# data saving
 # download world bank data
 tmp <- tempfile()
 if (Sys.info()[1] == "Windows") {
@@ -27,7 +27,7 @@ asmr$income_group <- wb$`Income group`[match(
   wb$Code
 )]
 usethis::use_data(asmr, overwrite = TRUE, internal = FALSE)
-
+save(asmr, file="data/asmr.rda", compress = "gzip")
 # cdr -----------------
 cdr <- read.csv("data-raw/202110gavi-3_dds-201910_cdr_both.csv")
 cdr <- subset(cdr, select=-c(country_code_numeric))
