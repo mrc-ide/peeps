@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, message=FALSE}
 library(peeps)
 library(ggplot2)
 library(dplyr)
@@ -84,7 +84,7 @@ In order to create an easily loadable dataset that is of the same format as that
 
 The dataset can either be loaded directly using `peeps::mortality_rates` or loaded using the helper function `load_deathrates`:
 
-```{load_deathrates, r}
+```{r load deathrates}
 # load all death rates
 all_mortality_rates<-peeps::load_deathrates()
 
@@ -92,27 +92,33 @@ head(all_mortality_rates)
 
 # load data by country, year
 deathrates_morocco<-peeps::load_deathrates(country="Morocco")
+head(deathrates_morocco)
+
 deathrates_afg<-peeps::load_deathrates(iso3c="AFG", year=c(2000,2001,2005))
+head(deathrates_afg)
 ```
 The function takes single or vector values for iso3c, country, and year inputs.
 
-```{plot deathrates, r, fig.width = 7}
+Here we inspect the given death rate values and the interpolated points in between. 
+```{r plot deathrates, fig.width=7, fig.height=5}
 deathrates_ken<-peeps::load_deathrates(country="Kenya")
 
 # compare source data with interpolated points
-deathrates_ken$interpolated<-ifelse(deathrates_ken$year %% 5 == 0, "base",
+deathrates_ken$interpolated<-ifelse(deathrates_ken$year %% 5 == 0, "original",
                                        "interpolated")
 
+deathrates_ken<-subset(deathrates_ken, deathrates_ken$age_from == 10)
+
 ken_plot<-ggplot2::ggplot(data=deathrates_ken, aes(year,value,
-                     color=as.factor(deathrates_keninterpolated), 
-                     fill=as.factor(deathrates_keninterpolated))) +
-              geom_point()+
-              labs(title = paste0(deathrates_kencountry, " death rates, ages: ",
-                                  deathrates_kenage_from,
-                                  "-",deathrates_kenage_to, " years"),
-                   fill = "Interpolated",
-                   color = "Interpolated")+
-              theme_bw()
+                     color=as.factor(interpolated))) +
+          geom_point()+
+          labs(title = paste0(deathrates_ken$country, " mortality rates, ages ",
+                              deathrates_ken$age_from,
+                              "-",deathrates_ken$age_to, " years"),
+               x = "Year",
+               y = "Mortality Rate",
+               color = "Interpolated")+
+          theme_bw()
 
 ken_plot
 ```

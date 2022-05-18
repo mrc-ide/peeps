@@ -62,8 +62,18 @@ load_deathrates <- function(iso3c = NULL, country = NULL, year = NULL) {
            that are multiples of 5, and data of format = 'nmr' are available
            for all years.")
     }
-    deathrates <- deathrates[deathrates$year == as.numeric(year), ]
+    if (length(year) == 1) {
+      deathrates <- deathrates[deathrates$year == year, ]
+    } else {
+      deathrates <- deathrates[deathrates$year %in% year, ]
+    }
   }
-
+  
+  deathrates <- deathrates[order(
+    deathrates$country,
+    deathrates$year,
+    deathrates$age_from
+  ), ]
+  
   return(deathrates)
 }
