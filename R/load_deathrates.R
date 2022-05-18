@@ -9,40 +9,46 @@
 #' If format = 'asmr', year data is given in 5 year chunks. If format = 'nmr',
 #' year is available by single year. There is no difference in the distribution
 #' of values between the two formats.
-#' @param format Format to return deathrates by ('asmr' = by years divisible by
-#' 5, or 'nmr' = single year values). See 'peeps::merge_nmr_asmr' documentation
-#' for details.
 #'
 #' @return Data.frame of deathrates for country.
 #' @export
-load_deathrates <- function(iso3c = NULL, country = NULL, year = NULL,
-                            format = "asmr") {
-  format <- tolower(format)
+load_deathrates <- function(iso3c = NULL, country = NULL, year = NULL) {
+  deathrates <- peeps::mortality_rates
 
-  if (format == "asmr") {
-    deathrates <- peeps::merge_nmr_asmr(format = "asmr")
-  } else if (format == "nmr") {
-    deathrates <- peeps::merge_nmr_asmr(format = "nmr")
-  } else {
-    stop("Error in format call. Must be either 'asmr' or 'nmr'")
-  }
-
-  if (!is.null(country)) {
+  if (!is.null(country) && !is.null(iso3c)) {
+    if (!all(country %in% unique(deathrates$country)) |
+      !all(iso3c %in% unique(deathrates$country_code))) {
+      stop("Country/country code not found. Double check input/spelling.")
+    }
+    if (length(country) == 1) {
+      deathrates <- deathrates[deathrates$country == country, ]
+      iso3c <- toupper(as.character(iso3c))
+      if (!all(iso3c %in% unique(deathrates$country_code))) {
+        stop("Country and country code do not match. 
+             Double check input/spelling.")
+      }
+    } else {
+      deathrates <- deathrates[deathrates$country %in% country, ]
+      if (!all(iso3c %in% unique(deathrates$country_code))) {
+        stop("Countries and country codes do not match. 
+             Double check input/spelling.")
+      }
+    }
+  } else if (!is.null(country)) {
     if (!all(country %in% unique(deathrates$country))) {
       stop("Country not found. Double check input/spelling.")
     }
-    if (length(country) == 1){
+    if (length(country) == 1) {
       deathrates <- deathrates[deathrates$country == country, ]
     } else {
       deathrates <- deathrates[deathrates$country %in% country, ]
     }
-    
   } else if (!is.null(iso3c)) {
     iso3c <- toupper(as.character(iso3c))
     if (!all(iso3c %in% unique(deathrates$country_code))) {
       stop("Country code not found. Double check input/spelling.")
     }
-    if (length(iso3c) == 1){
+    if (length(iso3c) == 1) {
       deathrates <- deathrates[deathrates$country_code == iso3c, ]
     } else {
       deathrates <- deathrates[deathrates$country_code %in% iso3c, ]

@@ -43,9 +43,37 @@ The dataset that fits the  [malariasimulation](https://github.com/mrc-ide/malari
 
 Although the mortality rate datasets included in this package might look similar, they have important differences that come with certain biases. This vignette sets to briefly outline some of these differences so that appropriate choices can be made when deciding which rates to use for what purposes, and how that might affect the outcome of any analysis. 
 
-### Wrangled Mortality Rates
+### Loading Wrangled Mortality Rates
 
-The mortality_rates dataset was produced through these steps:
+[Malariasimulation](https://github.com/mrc-ide/malariasimulation/) takes standard demography data as a vector taken from a table that looks like this:
+
+| Year | Age From | Age To  |Death Rate|
+|------|----------|---------|----------|
+| 2010 | 0        | .083333 | .4014834 |
+| 2010 | .0833333 | 1       | .0583379 |
+| 2010 | 1        | 5       | .0380348 |
+| 2010 | 5        | 10      | .0395061 |
+| 2010 | 10       | 15      | .0347255 |
+| 2010 | 15       | 20      | .0240849 |
+| 2010 | 20       | 25      | .0300902 |
+| 2010 | 25       | 30      | .0357914 |
+| 2010 | 30       | 35      | .0443123 |
+| 2010 | 35       | 40      | .0604932 |
+| 2010 | 40       | 45      | .0466799 |
+| 2010 | 45       | 50      | .0426199 |
+| 2010 | 50       | 55      | .0268332 |
+| 2010 | 55       | 60      | .049361  |
+| 2010 | 60       | 65      | .0234852 |
+| 2010 | 65       | 70      | .0988317 |
+| 2010 | 70       | 75      | .046755  |
+| 2010 | 75       | 80      | .1638875 |
+| 2010 | 80       | 85      | .1148753 |
+| 2010 | 85       | 90      | .3409079 |
+| 2010 | 90       | 95      | .2239224 |
+| 2010 | 95       | 200     | .8338688 |
+
+Data from the [United Nations 2019 World Population Prospects](https://population.un.org/wpp/) (UNWPP) was processed into a downloadable format by the [Vaccine Impact Modelling Consortium](https://www.vaccineimpact.org) (VIMC) at Imperial College London. 
+In order to create an easily loadable dataset that is of the same format as that in `malariasimulation`, these data sets were wrangled and combined through the following steps into `peeps::mortality_rates`:
 
 1. Processing the ASMR dataset
     + Grouping the data by age group, gender, and country
@@ -54,7 +82,41 @@ The mortality_rates dataset was produced through these steps:
 2. Linearly interpolating between the years to get year-specific rates
 3. Merging the interpolated ASMR dataset with the NMR data
 
-    
+The dataset can either be loaded directly using `peeps::mortality_rates` or loaded using the helper function `load_deathrates`:
+
+```{load_deathrates, r}
+# load all death rates
+all_mortality_rates<-peeps::load_deathrates()
+
+head(all_mortality_rates)
+
+# load data by country, year
+deathrates_morocco<-peeps::load_deathrates(country="Morocco")
+deathrates_afg<-peeps::load_deathrates(iso3c="AFG", year=c(2000,2001,2005))
+```
+The function takes single or vector values for iso3c, country, and year inputs.
+
+```{plot deathrates, r, fig.width = 7}
+deathrates_ken<-peeps::load_deathrates(country="Kenya")
+
+# compare source data with interpolated points
+deathrates_ken$interpolated<-ifelse(deathrates_ken$year %% 5 == 0, "base",
+                                       "interpolated")
+
+ken_plot<-ggplot2::ggplot(data=deathrates_ken, aes(year,value,
+                     color=as.factor(deathrates_keninterpolated), 
+                     fill=as.factor(deathrates_keninterpolated))) +
+              geom_point()+
+              labs(title = paste0(deathrates_kencountry, " death rates, ages: ",
+                                  deathrates_kenage_from,
+                                  "-",deathrates_kenage_to, " years"),
+                   fill = "Interpolated",
+                   color = "Interpolated")+
+              theme_bw()
+
+ken_plot
+```
+
 
 ### Population Mortality
 
@@ -155,32 +217,4 @@ Below you can see a comparison of the VIMC fits (Montagu) do the IGME data and t
 
 ![NMR VIMC fits](nmr.gif)
 
-### Loading Mortality Rates
-
-[Malariasimulation](https://github.com/mrc-ide/malariasimulation/) takes standard demography data as a vector taken from a table that looks like this:
-
-| Year | Age From | Age To  |Death Rate|
-|------|----------|---------|----------|
-| 2010 | 0        | .083333 | .4014834 |
-| 2010 | .0833333 | 1       | .0583379 |
-| 2010 | 1        | 5       | .0380348 |
-| 2010 | 5        | 10      | .0395061 |
-| 2010 | 10       | 15      | .0347255 |
-| 2010 | 15       | 20      | .0240849 |
-| 2010 | 20       | 25      | .0300902 |
-| 2010 | 25       | 30      | .0357914 |
-| 2010 | 30       | 35      | .0443123 |
-| 2010 | 35       | 40      | .0604932 |
-| 2010 | 40       | 45      | .0466799 |
-| 2010 | 45       | 50      | .0426199 |
-| 2010 | 50       | 55      | .0268332 |
-| 2010 | 55       | 60      | .049361  |
-| 2010 | 60       | 65      | .0234852 |
-| 2010 | 65       | 70      | .0988317 |
-| 2010 | 70       | 75      | .046755  |
-| 2010 | 75       | 80      | .1638875 |
-| 2010 | 80       | 85      | .1148753 |
-| 2010 | 85       | 90      | .3409079 |
-| 2010 | 90       | 95      | .2239224 |
-| 2010 | 95       | 200     | .8338688 |
 
