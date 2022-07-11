@@ -10,14 +10,11 @@ estimates.}
 \format{
 A data frame with 383268 rows and 8 variables:
 \describe{
-\item{country_code}{Iso3c codes}
+\item{iso3c}{Iso3c codes}
 \item{country}{Country name}
-\item{age_from}{Starting age of the age band, inclusive.}
-\item{age_to}{Ending age of the age band, inclusive. Is 120 for all entries.}
-\item{year}{Year applicable, ranges from 1950-2099}
-\item{gender}{"both" genders only.}
-\item{value}{Mortality rate.}
-\item{income_group}{World Bank country income group.}
+\item{age_upper}{Ending age of the age band, inclusive}
+\item{year}{Year}
+\item{mortality_rate}{Mortality rate}
 }
 }
 \usage{

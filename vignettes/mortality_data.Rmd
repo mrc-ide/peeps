@@ -18,34 +18,17 @@ knitr::opts_chunk$set(
 ```{r setup, message=FALSE}
 library(peeps)
 library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(magrittr)
-#library(gifski) 
 ```
 
 
 ## Data Overview
 
-
-The different mortality measures included in this package are as follows:
-
-1. Wrangled Mortality Rates (mortality_rates)
-2. Population Mortality Rates
-    + Age Specific Mortality Rates (asmr)
-    + Crude Death Rates (cdr)
-3. Child Mortality Rates: 
-    + Neonatal (nmr)
-    + Infant (imr)
-    + Under-5 (u5mr)
-
-The dataset that fits the  [malariasimulation](https://github.com/mrc-ide/malariasimulation/) package input is mortality_rates, and it is a combination of both the age specific mortality rates and the neonatal mortality rates. The first section will outline how they were combined in addition to the interpolation done to get rates by year, while the subsequent sections will break these building block datasets down into greater detail. Although most users will only need to use mortality_rates (and can simply load it using peeps::mortality_rates), all data mentioned in this vignette can be accessed through the package.
-
-Although the mortality rate datasets included in this package might look similar, they have important differences that come with certain biases. This vignette sets to briefly outline some of these differences so that appropriate choices can be made when deciding which rates to use for what purposes, and how that might affect the outcome of any analysis. 
+The dataset that fits the [malariasimulation](https://github.com/mrc-ide/malariasimulation/) package input is mortality_rates, and it is a combination of both the age specific mortality rates and the neonatal mortality rates. The first section will outline how they were combined in addition to the interpolation done to get rates by year, while the subsequent sections will break these building block datasets down into greater detail.
 
 ### Loading Wrangled Mortality Rates
 
-[Malariasimulation](https://github.com/mrc-ide/malariasimulation/) takes standard demography data as a vector taken from a table that looks like this:
+[Malariasimulation](https://github.com/mrc-ide/malariasimulation/) takes standard 
+demography data as a vector taken from a table that looks like this:
 
 | Year | Age From | Age To  |Death Rate|
 |------|----------|---------|----------|
@@ -76,7 +59,7 @@ Data from the [United Nations 2019 World Population Prospects](https://populatio
 In order to create an easily loadable dataset that is of the same format as that in `malariasimulation`, these data sets were wrangled and combined through the following steps into `peeps::mortality_rates`:
 
 1. Processing the ASMR dataset
-    + Grouping the data by age group, gender, and country
+    + Grouping the data by age group, country
     + Expanding the 5 year bands to all the years in between
     + Assigning the mortality rates to the first year of the 5 year band
 2. Linearly interpolating between the years to get year-specific rates
@@ -84,43 +67,21 @@ In order to create an easily loadable dataset that is of the same format as that
 
 The dataset can either be loaded directly using `peeps::mortality_rates` or loaded using the helper function `load_deathrates`:
 
-```{r load deathrates}
+```{r load deathrates, fig.width=7}
 # load all death rates
-all_mortality_rates<-peeps::load_deathrates()
+all_mortality_rates <- peeps::load_deathrates()
 
 head(all_mortality_rates)
 
+ggplot(data = all_mortality_rates, aes(x = factor(age_upper), y = mortality_rate)) +
+  geom_boxplot() +
+  ylab("Mortality rate (per year)") + 
+  xlab("Upper age (years)") +
+  theme_bw()
+
 # load data by country, year
-deathrates_morocco<-peeps::load_deathrates(country="Morocco")
-head(deathrates_morocco)
-
-deathrates_afg<-peeps::load_deathrates(iso3c="AFG", year=c(2000,2001,2005))
-head(deathrates_afg)
-```
-The function takes single or vector values for iso3c, country, and year inputs.
-
-Here we inspect the given death rate values and the interpolated points in between. 
-```{r plot deathrates, fig.width=7, fig.height=5}
-deathrates_ken<-peeps::load_deathrates(country="Kenya")
-
-# compare source data with interpolated points
-deathrates_ken$interpolated<-ifelse(deathrates_ken$year %% 5 == 0, "original",
-                                       "interpolated")
-
-deathrates_ken<-subset(deathrates_ken, deathrates_ken$age_from == 10)
-
-ken_plot<-ggplot2::ggplot(data=deathrates_ken, aes(year,value,
-                     color=as.factor(interpolated))) +
-          geom_point()+
-          labs(title = paste0(deathrates_ken$country, " mortality rates, ages ",
-                              deathrates_ken$age_from,
-                              "-",deathrates_ken$age_to, " years"),
-               x = "Year",
-               y = "Mortality Rate",
-               color = "Interpolated")+
-          theme_bw()
-
-ken_plot
+deathrates_ghana <- peeps::load_deathrates(iso3c = "GHA", year = 2020)
+head(deathrates_ghana)
 ```
 
 
@@ -129,98 +90,17 @@ ken_plot
 Data Set | Mortality Rate | Definition | Equation
 ------------- | ------------- | ------------- | -------------
 asmr | Age specific mortality rate. | Measures incidence of death at each age, adjusted for population distributions. Assumes age-mortality profile of the cohort stays constant throughout life. Number of deaths every year at age x ($d_{x}$) divided by the mid year population of age x ($p_{x}$). | $m_{x} = \frac{d_{x}}{p_{x}}$
-cdr | Crude death rate. | Number of deaths at age x ($d_{x}$) over a given period ($[0,T]$) divided by the person-years ($L_{x}$) lived by the population over that period. It is expressed as average annual number of deaths per 1,000 population. | $CDR[0,T] = \frac{d_{x}}{L_{x}}$ where $L_{x} = I_{x + 1} + d_{x}*0.5$.<br/><br/><small> $I_{x+1}$ are the number of people who survive until age x+1, who each contribute one person year to the calculation. Each person who dies in the interval ($d_{x}$) contributes half a person year.</small> 
 
 The population level mortality rates provided by this package are taken from the model life tables calculated in the [United Nations 2019 World Population Prospects](https://population.un.org/wpp/) (UNWPP). More details on the model life tables and how they are calculated can be found [here](https://www.un.org/development/desa/pd/data/model-life-tables), and details on the UNWPP 2019 methodology can be found [here](https://population.un.org/wpp/Publications/Files/WPP2019_Methodology.pdf). These data are processed into a downloadable format by the [Vaccine Impact Modelling Consortium](https://www.vaccineimpact.org) (VIMC) at Imperial College London.
 
 
 There are two standard measures of mortality: the age specific mortality rate (ASMR, also known as $m_{x}$, or the central rate of mortality) and the crude death rate (CDR), which is calculated using the total number of deaths at a certain age and the life table projections of person years lived. Given the variability in crude death numbers by year, cohort, random error/outliers/biases in reporting and measurement, and the underlying age distribution in a population, the ASMR is often used in order to compare mortality trends across times and countries. The ASMR takes an average over 5 year timespans and 5 year age groups, and adjusts for higher age distributions in populations. However, the ASMR is taken from a model life table, which is a theoretical tool used to model the mortality profile of a specific cohort over time, and thus assumes that this mortality profile remains constant throughout the life of the cohort. Therefore, the CDR can be helpful in providing a snapshot of a country's specific population profile at a given moment in time, and allows for the year over year variation in the differences in mortality by cohort.
 
-
-
-```{r asmr}
-# Investigating the details of the mortality rate data sets
-
-# Call age specific mortality rates from peeps package
-asmr <-peeps::asmr
-dim(asmr) # 225720 rows by 8 columns
-head(asmr)
-
-cdr <- peeps::cdr
-dim(cdr) # 17100 rows by 7 columns
-head(cdr)
-
-# Comparing the two values
-summary(asmr$value)
-summary(cdr$value)
-
-```
-```{r process data}
-asmr<-peeps::asmr
-cdr<-peeps::cdr
-
-# Transforming data to inspect rates
-asmr <- subset(asmr, asmr$gender == "both")
-asmr<-subset(asmr, select=-c(country, age_to, gender))
-cdr<-subset(cdr, select=-c(country, age_to, age_from, gender))
-
-# Taking the mean of the ASMR over all age groups for comparison with CDR
-new_asmr<-aggregate(value ~ country_code + year, data = asmr, mean, na.rm = TRUE)
-colnames(new_asmr)[3] <- "Age Specific Mortality Rate"
-colnames(cdr)[3]<-"Crude Death Rate"
-
-rates<-dplyr::left_join(cdr, new_asmr, by = c("country_code", "year"))
-rates<- rates %>%
-  tidyr::pivot_longer(cols=c("Crude Death Rate", "Age Specific Mortality Rate"),
-                      names_to="rate",
-                      values_to="value")
-```
-
-```{r asmr plots, eval=FALSE}
-# Making an animation of the plots of ASMR vs. CDR by country, using gifski package
-makeplot <- function(){
-  datalist <- split(rates, rates$country_code)
-  lapply(datalist, function(data){
-    p <- ggplot2::ggplot(data, aes(x=year, y=value)) +
-      geom_point(aes(color=as.factor(rate))) +
-      labs(y="Average rate per 100,000", x="Year", title=paste0(data$country_code, " Average Mortality"), col="Rate") + 
-      theme_bw()
-    print(p)
-  })
-}
-gif_file <- file.path('deathrates.gif')
-gifski::save_gif(makeplot(), gif_file, 1280, 720, res = 144)
-```
-<img src="deathrates.gif" width="850" height="480"/>
-
 ### Child Mortality Data
 
 Data Set | Mortality Rate | Definition | Source
 ------------- | ------------- | ------------- | -------------
 nmr | Neonatal mortality rate. | Probability of dying between birth and exact age 28 days. It is expressed as average annual deaths per 1,000 births. | VIMC (Combination of UNWPP and [IGME](https://childmortality.org/))
-imr | Infant mortality rate. | Probability of dying between birth and exact age 1. It is expressed as average annual deaths per 1,000 births. | UNWPP
-u5mr | Under-5 mortality rate. | Probability of dying between birth and exact age 5. It is expressed as average annual deaths per 1,000 births. | UNWPP
+
 
 The UNWPP provides smoothed estimates of the IMR and the U5MR, however does not provide estimates of the NMR. The [UN Inter-agency Group for Child Mortality Estimation](https://childmortality.org/) provides much more detailed estimates of all past child mortality rates, including NMR, through a process of detailed data collection and careful model fitting, however does not provide any projections of the NMR into the future. The VIMC has therefore proposed an NMR estimate that is a scaled transformation of the UNWPP's IMR, multiplied by the fraction of NMR/IMR from the IGME. This calculation is justified by the fact that the NMR is a fraction of the IMR, and an assumption that this means that this relationship remains consistent over time. For estimates before or after the IGME time range, the closest data points are used. 
-
-```{r child mrs}
-# Quick look
-nmr <-peeps::nmr
-dim(nmr) 
-head(nmr)
-
-imr <- peeps::imr
-dim(imr) 
-head(imr)
-
-u5mr <- peeps::u5mr
-dim(u5mr) 
-head(u5mr)
-
-```
-
-Below you can see a comparison of the VIMC fits (Montagu) do the IGME data and the extrapolation done informed by the UNWPP data by country.
-
-![NMR VIMC fits](nmr.gif)
-
-

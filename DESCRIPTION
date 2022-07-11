@@ -2,23 +2,13 @@ Package: peeps
 Title: Malaria model demography
 Version: 0.0.1
 Authors@R: 
-    person("Pete", "Winskill", , "p.winskill@imperial.ac.uk", role = c("aut", "cre"))
+  c(person(given = "Pete", family = "Winskill", email = "p.winskill@imperial.ac.uk", role = c("aut", "cre")),
+    person(given = "Ines", family = "Gerard-Ursin", email = "ines.gerard-ursin20@imperial.ac.uk", role = c("aut"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Imports: 
     base,
-    countrycode,
-    data.table,
-    dplyr,
-    magrittr,
-    plyr,
-    readxl,
-    rlang,
-    stats,
-    stringr,
-    tidyr,
-    utils,
-    vroom
+    ggplot2
 Suggests: 
     rmarkdown,
     knitr,

@@ -11,10 +11,7 @@ load_deathrates(iso3c = NULL, country = NULL, year = NULL)
 
 \item{country}{Country name to subset deathrates by.}
 
-\item{year}{Year to subset deathrates by. Can be single value or vector.
-If format = 'asmr', year data is given in 5 year chunks. If format = 'nmr',
-year is available by single year. There is no difference in the distribution
-of values between the two formats.}
+\item{year}{Year to subset deathrates by. Can be single value or vector.}
 }
 \value{
 Data.frame of deathrates for country.
