@@ -1,0 +1,15 @@
+#' Mortality rates from 1950-2099. Average five year values for age specific 
+#' mortality rates from model life tables used as a basis for linear 
+#' interpolation between years, and then combined with neonatal mortality
+#' estimates. 
+#'
+#'@format A data frame with 383268 rows and 8 variables:
+#' \describe{
+#'   \item{iso3c}{Iso3c codes}
+#'   \item{country}{Country name}
+#'   \item{age_upper}{Ending age of the age band, inclusive}
+#'   \item{year}{Year}
+#'   \item{mortality_rate}{Mortality rate}
+#' }
+#' 
+"mortality_rates"
