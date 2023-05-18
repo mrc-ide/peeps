@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# peeps
+# peeps <img src="man/figures/peeps_hex.png" align="right" width=30% height=30% />
 
 <!-- badges: start -->
 
