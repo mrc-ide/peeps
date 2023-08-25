@@ -16,10 +16,13 @@ equilibrium_age_distribution <- function(life_table){
   m <- lifetable_to_transtion_matrix(life_table)
   
   # convert to rates
-  r = m - diag(n)
+  r = t(m - diag(n))
   
   # compute Eigenvalues of the rate matrix
-  E = eigen(t(r))
+  E = eigen(
+    x = r,
+    symmetric = FALSE
+  )
   
   # there should be one Eigenvalue that is zero (up to limit of computational
   # precision). Find which Eigenvalue this is
