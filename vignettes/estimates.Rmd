@@ -79,7 +79,7 @@ deathrates <- rescale_prob(nga_example$adjusted_mortality_rates, 365, 1)
 # Create matrix of death rates
 deathrates_matrix <- matrix(deathrates, nrow = length(1), byrow = TRUE)
 # Add parameters
-p <- malariasimulation::set_demography(
+p <- set_demography(
   parameters = p,
   agegroups = ages,
   timesteps = 0,
@@ -140,7 +140,7 @@ deathrates <- rescale_prob(nga_mortality_rates_with_neonatal$adjusted_mortality_
 # Create matrix of death rates
 deathrates_matrix <- matrix(deathrates, nrow = length(1), byrow = TRUE)
 # Add parameters
-p <- malariasimulation::set_demography(
+p <- set_demography(
   parameters = p,
   agegroups = ages,
   timesteps = 0,
