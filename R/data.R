@@ -1,15 +1,13 @@
-#' Mortality rates from 1950-2099. Average five year values for age specific 
-#' mortality rates from model life tables used as a basis for linear 
-#' interpolation between years, and then combined with neonatal mortality
-#' estimates. 
+#' Example UN WPP mortality and age-structure data
 #'
-#'@format A data frame with 383268 rows and 8 variables:
+#' A data frame with 101 rows and 6 columns:
 #' \describe{
-#'   \item{iso3c}{Iso3c codes}
-#'   \item{country}{Country name}
-#'   \item{age_upper}{Ending age of the age band, inclusive}
-#'   \item{year}{Year}
-#'   \item{mortality_rate}{Mortality rate}
+#'   \item{region}{Country name}
+#'   \item{iso3x}{3 letter ISO country codes}
+#'   \item{age_lower}{Lower end of age group (years)}
+#'   \item{age_upper}{Upper end of age group (years)}
+#'   \item{qx}{Probability of dying in age group}
+#'   \item{p}{Proportion of population in age group}
 #' }
-#' 
-"mortality_rates"
+#' @source <https://population.un.org/wpp/Download/Standard/Mortality/>
+"nga_example"
