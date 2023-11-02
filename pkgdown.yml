@@ -2,6 +2,6 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  mortality_data: mortality_data.html
-last_built: 2023-05-18T16:20Z
+  estimates: estimates.html
+last_built: 2023-11-02T11:39Z
 
