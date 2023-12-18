@@ -75,7 +75,7 @@ estimate_mortality_rates <- function(target_age_distribution, starting_mortality
     par = starting_mortality_rates,
     fn = optim_objective,
     method = "L-BFGS-B",
-    lower = 1 / 10000,
+    lower = starting_mortality_rates / 2,
     upper = 0.9,
     target_age_distribution = target_age_distribution
   )
