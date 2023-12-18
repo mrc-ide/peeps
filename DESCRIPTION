@@ -1,6 +1,6 @@
 Package: peeps
 Title: Malaria model demography
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: 
   c(person(given = "Pete", family = "Winskill", email = "p.winskill@imperial.ac.uk", role = c("aut", "cre")),
     person(given = "Ines", family = "Gerard-Ursin", email = "ines.gerard-ursin20@imperial.ac.uk", role = c("aut")))
