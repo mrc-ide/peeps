@@ -10,7 +10,7 @@ equilibrium_age_distribution(life_table)
 \item{life_table}{Vector of yearly death probability for 0-90.}
 }
 \value{
-Proportion of popution in each age group (at equilibrium)
+Proportion of population in each age group (at equilibrium)
 }
 \description{
 Estimate the equilbrium age distribution given a lifetable (probability, of death in each year).

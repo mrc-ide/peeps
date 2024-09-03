@@ -1,13 +1,13 @@
 #' Equilibrium age distribution
 #'
-#' Estimate the equilbrium age distribution given a lifetable (probability, of death in each year).
+#' Estimate the equilibrium age distribution given a lifetable (probability, of death in each year).
 #' Life table raw data can be obtained from http://apps.who.int/gho/data/node.main.687?lang=en. The input
 #' used is the "nqx - probability of dying between ages x and x+n" column, which is then smoothly
 #' extrapolated to yearly probabilities.
 #'
 #' @param life_table Vector of yearly death probability for 0-90.
 #'
-#' @return Proportion of popution in each age group (at equilibrium)
+#' @return Proportion of population in each age group (at equilibrium)
 #' @export
 equilibrium_age_distribution <- function(life_table){
   n <- length(life_table)
